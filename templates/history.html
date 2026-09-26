@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendation History - PocketSmart AI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>PocketSmart AI</h2>
+        <div><a href="/dashboard">Dashboard</a></div>
+    </nav>
+
+    <div class="container">
+        <h2>Your Recommendation History</h2>
+        {% if history %}
+            <div class="card-grid">
+                {% for item in history %}
+                    <div class="card">
+                        <span style="font-size:0.8rem; color:#6b7280;">{{ item.timestamp }}</span>
+                        <h3>{{ item.recommendation_type | capitalize }} Budget Plan</h3>
+                        <p><strong>Total Budget:</strong> ₹{{ item.result_summary.total_budget }}</p>
+                        <button onclick="viewDetails('{{ item.id }}')" class="btn">View Full Plan</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No historical recommendation records found.</p>
+        {% endif %}
+
+        <div id="detailsModal" class="card" style="display:none; margin-top:2rem;"></div>
+    </div>
+
+    <script>
+        async function viewDetails(id) {
+            const res = await fetch(`/recommendation-details/${id}`);
+            if(res.ok) {
+                const data = await res.json();
+                document.getElementById('detailsModal').style.display = 'block';
+                document.getElementById('detailsModal').innerHTML = `
+                    <h3>Plan Details (${data.type})</h3>
+                    <pre style="background:#f1f5f9; padding:1rem; border-radius:4px; overflow-x:auto;">
+${JSON.stringify(data.full_result, null, 2)}
+                    </pre>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

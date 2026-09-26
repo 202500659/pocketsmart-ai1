@@ -1,0 +1,26 @@
+pocketsmart-ai/
+│
+├── templates/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   ├── history.html
+│   ├── home_planner.html
+│   ├── party_planner.html
+│   └── jewellery_planner.html
+│
+├── main.py
+├── gemini_utils.py
+├── requirements.txt
+├── .gitignore
+│
+└── docs/
+    ├── 01_brainstorming_ideation.md
+    ├── 02_requirement_analysis.md
+    ├── 03_project_design.md
+    ├── 04_project_planning.md
+    ├── 05_project_development.md
+    ├── 06_project_testing.md
+    ├── 07_project_documentation.md
+    └── 08_project_demonstration.md

@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><head><title>Dashboard</title></head><body style="font-family:Arial;text-align:center;padding:30px">
+<h1>Welcome {{ user.username }}!</h1>
+<h2>PocketSmart Planners</h2>
+<a href="/home-planner">Home Planner</a> | <a href="/party-planner">Party Planner</a> | <a href="/jewelry-planner">Jewelry</a> | <a href="/logout">Logout</a>
+<hr>
+<form id="budgetForm"><input type="number" id="budget" placeholder="Enter Budget Rs." required><button type="submit">Get AI Recommendations</button></form>
+<div id="result"></div>
+<script>
+document.getElementById('budgetForm').onsubmit=async(e)=>{e.preventDefault(); let b=document.getElementById('budget').value; let res=await fetch('/generate-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({total_budget:parseFloat(b)})}); let data=await res.json(); document.getElementById('result').innerText=JSON.stringify(data,null,2)}
+</script>
+</body></html>

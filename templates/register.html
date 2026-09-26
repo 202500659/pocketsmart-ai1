@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><head><title>Create Account - PocketSmart</title>
+<style>body{font-family:Arial;display:flex;justify-content:center;padding:50px} form{border:1px solid #ccc;padding:30px;border-radius:15px;width:350px} input{width:100%;padding:10px;margin:10px 0} button{width:100%;padding:12px;background:#6c5ce7;color:white;border:none;border-radius:8px;cursor:pointer}</style>
+</head><body>
+<form method="post" action="/register">
+<h2>Create Account</h2>
+<p>To use planner, please create account first</p>
+<input type="text" name="username" placeholder="Username (ex: preethi)" required>
+<input type="email" name="email" placeholder="Email" required>
+<input type="password" name="password" placeholder="Password (max 12 chars)" required>
+<button type="submit">Create Account</button>
+<p>Already have account? <a href="/login">Login</a></p>
+</form>
+</body></html>

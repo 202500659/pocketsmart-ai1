@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jewelry Planner - PocketSmart AI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>PocketSmart AI</h2>
+        <div><a href="/dashboard">Dashboard</a><a href="/history">History</a></div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h2>Jewelry Budget Planner</h2>
+            <form id="jewelryForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Total Budget (₹)</label>
+                    <input type="number" name="total_budget" required value="15000">
+                </div>
+                <div class="form-group">
+                    <label>Occasion</label>
+                    <input type="text" name="occasion" required placeholder="Wedding, Birthday, Anniversary">
+                </div>
+                <div class="form-group">
+                    <label>Style Preferences</label>
+                    <textarea name="preferences" rows="2" placeholder="Gold finish, silver, minimal, traditional..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Upload Outfit Image (Optional)</label>
+                    <input type="file" name="image" accept="image/*">
+                </div>
+                <button type="submit" class="btn">Get Recommendations</button>
+            </form>
+        </div>
+
+        <div id="loading" style="display:none; margin-top:2rem; text-align:center;">
+            <h3>Analyzing outfit and matching jewelry...</h3>
+        </div>
+
+        <div id="results" style="margin-top:2rem;"></div>
+    </div>
+
+    <script>
+        document.getElementById('jewelryForm').onsubmit = async (e) => {
+            e.preventDefault();
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').innerHTML = '';
+
+            const formData = new FormData(e.target);
+            const res = await fetch('/jewelry-budget', {
+                method: 'POST',
+                body: formData
+            });
+
+            document.getElementById('loading').style.display = 'none';
+
+            if (res.ok) {
+                const data = await res.json();
+                let html = `<div class="card"><h3>Jewelry Suggestions</h3>`;
+                
+                if(data.outfit_analysis) {
+                    html += `<div style="background:#eff6ff; padding:1rem; border-radius:6px; margin-bottom:1rem;">
+                                <h4>Outfit Analysis</h4>
+                                <p><strong>Colors:</strong> ${data.outfit_analysis.colors}</p>
+                                <p><strong>Style:</strong> ${data.outfit_analysis.style}</p>
+                             </div>`;
+                }
+
+                html += `<table class="results-table">
+                        <tr><th>Type</th><th>Description</th><th>Est. Price</th><th>Platforms</th></tr>`;
+                (data.jewelry_recommendations || []).forEach(item => {
+                    let links = '';
+                    if(item.shopping_links) {
+                        for(let [p, url] of Object.entries(item.shopping_links)) {
+                            links += `<a href="${url}" target="_blank" class="badge-link">${p}</a>`;
+                        }
+                    }
+                    html += `<tr><td>${item.item_type}</td><td>${item.description}</td><td>₹${item.estimated_price}</td><td>${links}</td></tr>`;
+                });
+                html += `</table></div>`;
+                document.getElementById('results').innerHTML = html;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Interior Planner - PocketSmart AI</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f9f9f9; }
+        .card { max-width: 600px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input[type="number"], textarea { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { background-color: #1a365d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .error-msg { color: red; font-weight: bold; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Home Interior Budget Planner</h2>
+
+    {% if error %}
+        <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 15px;">
+            <label>Total Budget (₹)*</label>
+            <input type="number" name="budget" value="50000" required style="width: 100%;">
+        </div>
+
+        <div class="grid">
+            <div class="field">
+                <label>Lights / Fixtures Count</label>
+                <input type="number" name="lights_count" value="4">
+            </div>
+            <div class="field">
+                <label>Ceiling Fans Count</label>
+                <input type="number" name="fans_count" value="2">
+            </div>
+            <div class="field">
+                <label>Furniture Pieces</label>
+                <input type="number" name="furniture_count" value="2">
+            </div>
+            <div class="field">
+                <label>Dining Tables Count</label>
+                <input type="number" name="dining_tables_count" value="1">
+            </div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Rooms Included:</label><br>
+            <input type="checkbox" name="rooms" value="Living Room" checked> Living Room <br>
+            <input type="checkbox" name="rooms" value="Kitchen" checked> Kitchen <br>
+            <input type="checkbox" name="rooms" value="Bedroom"> Bedroom
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Additional Requirements</label>
+            <textarea name="additional_requirements" rows="3" style="width: 100%;" placeholder="Modern minimal style..."></textarea>
+        </div>
+
+        <button type="submit" class="btn">Generate Recommendations</button>
+    </form>
+
+    {% if success %}
+        <div style="margin-top: 20px; padding: 15px; background: #e6fffa; border: 1px solid #319795; border-radius: 4px;">
+            <h3>Recommendations Generated!</h3>
+            <p>Total Estimated Budget: ₹{{ recommendations.total_budget }}</p>
+            <p>Selected Rooms: {{ recommendations.rooms_selected|join:", " }}</p>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
