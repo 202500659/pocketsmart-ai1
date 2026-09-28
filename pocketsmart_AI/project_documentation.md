@@ -31,3 +31,8 @@ Visual Studio Code
 
 Version Control:
 Git and GitHub
+# Project Documentation
+
+[Project Documentation Video]
+【WPS Docs】 PocketSmart_AI_15_Page_Team_Documentation
+https://global.wps.com/l/sbCaenwMtR4DrOjy
